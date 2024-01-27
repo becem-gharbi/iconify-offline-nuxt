@@ -1,5 +1,8 @@
 import type { Plugin } from "rollup";
 import { $fetch } from 'ofetch'
+import { loadIcon } from '@iconify/vue'
+import fs from 'fs'
+import path from 'path'
 
 export async function iconifyOfflineRollupPlugin(): Promise<Plugin> {
     const collectionsUrl = "https://icones.js.org/collections-meta.json"
@@ -20,15 +23,37 @@ export async function iconifyOfflineRollupPlugin(): Promise<Plugin> {
 
     return {
         name: "rollup-plugin-iconify-offline",
-        buildStart() {
-        },
+        
         transform(code) {
             const matches = code.match(regex)
             matches?.forEach(m => icons.add(m.replace(/'|"|`/g, '')))
             return { code, map: null }
         },
-        buildEnd() {
-            console.table(icons)
+
+        async buildEnd() {
+
+            const makeDir = (path: string, replace = false) => {
+                const exists = fs.existsSync(path)
+                if (exists && replace) {
+                    fs.rmSync(path, { recursive: true, force: true })
+                }
+                if (!exists || replace) {
+                    fs.mkdirSync(path)
+                }
+            }
+
+            const save = async (icon: string) => {
+                const data = await loadIcon(icon)
+                const [prefix, name] = icon.split(':')
+                const dirPath = path.resolve(rootPath, prefix)
+                const filePath = path.resolve(dirPath, name)
+                makeDir(dirPath)
+                fs.writeFileSync(filePath, JSON.stringify(data))
+            }
+
+            const rootPath = 'public/iconify'
+            makeDir(rootPath, true)
+            await Promise.all([...icons.values()].map(save))
         },
     };
 }
