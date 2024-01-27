@@ -11,7 +11,17 @@ const props = defineProps<{ name: string }>();
 const sName = computed(() => props.name)
 const icon = ref();
 
-const load = (name: string) => loadIcon(name).catch(() => console.error(`Failed to load icon ${name}`));
+async function load(name: string) {
+  try {
+    if (process.dev) {
+      return loadIcon(name)
+    }
+    const [prefix, _name] = name.split(':')
+    return $fetch(`/iconify/${prefix}/${_name}.json`)
+  } catch (error) {
+    console.error(`Failed to load icon ${name}`)
+  }
+}
 
 icon.value = await load(sName.value);
 

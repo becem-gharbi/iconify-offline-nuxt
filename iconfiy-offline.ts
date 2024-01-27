@@ -23,7 +23,7 @@ export async function iconifyOfflineRollupPlugin(): Promise<Plugin> {
 
     return {
         name: "rollup-plugin-iconify-offline",
-        
+
         transform(code) {
             const matches = code.match(regex)
             matches?.forEach(m => icons.add(m.replace(/'|"|`/g, '')))
@@ -46,7 +46,7 @@ export async function iconifyOfflineRollupPlugin(): Promise<Plugin> {
                 const data = await loadIcon(icon)
                 const [prefix, name] = icon.split(':')
                 const dirPath = path.resolve(rootPath, prefix)
-                const filePath = path.resolve(dirPath, name)
+                const filePath = path.resolve(dirPath, name + '.json')
                 makeDir(dirPath)
                 fs.writeFileSync(filePath, JSON.stringify(data))
             }
