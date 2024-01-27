@@ -1,5 +1,5 @@
 <template>
   <div>
-    <NuxtWelcome />
+    <Iconify name="logos:vue"/>
   </div>
 </template>
