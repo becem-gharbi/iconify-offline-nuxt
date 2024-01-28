@@ -1,5 +1,6 @@
 import { _api } from '@iconify/vue'
 import { getQuery, parseURL } from 'ufo'
+import { defu } from 'defu'
 
 export default defineNuxtPlugin(() => {
 
@@ -8,18 +9,15 @@ export default defineNuxtPlugin(() => {
     _api.setFetch(async (req) => {
         const url = req.toString()
         const prefix = parseURL(url).pathname.split('/').pop()!.replace('.json', '')
-        const name = getQuery(url).icons as string
-        
-        let body = {}
+        const icons = getQuery<{ icons: string }>(url).icons.split(',')
 
-        if (process.server) {
-            body = await import(`~/public/iconify/${prefix}/${name}.json`)
-        }
-        else {
-            body = await $fetch(`/iconify/${prefix}/${name}.json`)
-        }
+        const iconsData = process.server ?
+            await Promise.all(icons.map((i) => import(`~/public/iconify/${prefix}/${i}.json`))) :
+            await Promise.all(icons.map((i) => $fetch(`/iconify/${prefix}/${i}.json`)))
 
-        return new Response(JSON.stringify(body), {
+        const iconsDataMerged = defu({}, ...iconsData)
+
+        return new Response(JSON.stringify(iconsDataMerged), {
             status: 200,
             headers: new Headers({
                 'Content-Type': 'application/json',
