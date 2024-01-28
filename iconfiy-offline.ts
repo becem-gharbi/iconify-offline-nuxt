@@ -48,7 +48,14 @@ export async function iconifyOfflineRollupPlugin(): Promise<Plugin> {
                 const dirPath = path.resolve(rootPath, prefix)
                 const filePath = path.resolve(dirPath, name + '.json')
                 makeDir(dirPath)
-                fs.writeFileSync(filePath, JSON.stringify(data))
+                // https://iconify.design/docs/types/iconify-json.html#structure
+                const iconJSON = {
+                    prefix,
+                    icons: {
+                        [name]: data
+                    }
+                }
+                fs.writeFileSync(filePath, JSON.stringify(iconJSON))
             }
 
             const rootPath = 'public/iconify'
