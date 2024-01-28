@@ -4,7 +4,9 @@ import { loadIcon } from '@iconify/vue'
 import fs from 'fs'
 import path from 'path'
 
-export async function iconifyOfflineRollupPlugin(): Promise<Plugin> {
+export async function iconifyOfflineRollupPlugin(): Promise<Plugin | undefined> {
+    if (process.env.NODE_ENV === 'development') return
+
     const collectionsUrl = "https://icones.js.org/collections-meta.json"
 
     const collections = await $fetch(collectionsUrl, { retry: 3 })
