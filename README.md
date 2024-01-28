@@ -3,14 +3,16 @@
 This repo proposes a solution to load Iconify icons offline on Nuxt3. 
 
 The advantages are:
-- On server side no need for fetch calls thus better loading time.
-- On client side no need to rely on Iconify API thus better security.
-- Takes benefit from Iconify client & server side caching (localStorage & memory).
-- Build offline applications.
+- ✔️  On server side no need for network calls thus better loading time.
+- ✔️  On client side no need to rely on @iconify API thus better security.
+- ✔️  Takes benefit from Iconify client & server side caching (localStorage & memory).
+- ✔️  Build offline applications.
 
-On build a Rollup [plugin](https://github.com/becem-gharbi/iconify-offline-nuxt/blob/main/iconfiy-offline.ts) scans the code and extracts all valid icon names. Then these icons are downloaded and saved locally on `/public/iconify` folder. 
+At build a Rollup [plugin](https://github.com/becem-gharbi/iconify-offline-nuxt/blob/main/iconfiy-offline.ts) scans the code and extracts all valid icon names. Then these icons are downloaded and saved locally on `/public/iconify` folder. 
 
-On runtime (production) the icons are loaded via a custom [fetch](https://github.com/becem-gharbi/iconify-offline-nuxt/blob/main/plugins/iconify.ts) function. On server side icons are directly imported. On client side icons are served as static assets.
+At runtime (production) the icons are loaded via a custom [fetch](https://github.com/becem-gharbi/iconify-offline-nuxt/blob/main/plugins/iconify.ts) function.
+- On server side icons are directly imported. 
+- On client side icons are served as static assets.
 
 ## Setup
 
