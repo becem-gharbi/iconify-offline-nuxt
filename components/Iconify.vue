@@ -10,20 +10,8 @@ const props = defineProps<{ name: string }>();
 
 const sName = computed(() => props.name)
 const icon = ref();
-const isPrerendered = typeof useNuxtApp().payload.prerenderedAt === "number";
 
-async function load(name: string) {
-  try {
-    if (process.dev || (process.server && isPrerendered)) {
-      return loadIcon(name)
-    }
-
-    const [prefix, _name] = name.split(':')
-    return $fetch(`/iconify/${prefix}/${_name}.json`)
-  } catch (e) {
-    console.error(`Failed to load icon ${name}`)
-  }
-}
+const load = (name: string) => loadIcon(name).catch(() => console.error(`Failed to load icon ${name}`))
 
 icon.value = await load(sName.value);
 
