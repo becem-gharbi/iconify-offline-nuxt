@@ -10,6 +10,9 @@ export async function iconifyOfflineRollupPlugin(): Promise<Plugin | undefined> 
     const collectionsUrl = "https://icones.js.org/collections-meta.json"
 
     const collections = await $fetch(collectionsUrl, { retry: 3 })
+        .catch(() => {
+            throw new Error('[rollup-plugin-iconify-offline] failed to fetch collections')
+        })
 
     const prefixes = collections.map((el: any) => el.id)
 
@@ -45,11 +48,15 @@ export async function iconifyOfflineRollupPlugin(): Promise<Plugin | undefined> 
             }
 
             const save = async (icon: string) => {
-                const data = await loadIcon(icon)
+                const data = await loadIcon(icon).catch(() => {
+                    throw new Error(`[rollup-plugin-iconify-offline] failed to load icon ${icon}`)
+                })
+
                 const [prefix, name] = icon.split(':')
                 const dirPath = path.resolve(rootPath, prefix)
                 const filePath = path.resolve(dirPath, name + '.json')
                 makeDir(dirPath)
+
                 // https://iconify.design/docs/types/iconify-json.html#structure
                 const iconJSON = {
                     prefix,
@@ -63,6 +70,8 @@ export async function iconifyOfflineRollupPlugin(): Promise<Plugin | undefined> 
             const rootPath = 'public/iconify'
             makeDir(rootPath, true)
             await Promise.all([...icons.values()].map(save))
+
+            console.log(`[rollup-plugin-iconify-offline] downloaded ${icons.size} icons to ${rootPath}`)
         },
     };
 }
