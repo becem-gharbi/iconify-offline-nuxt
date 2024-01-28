@@ -1,20 +1,13 @@
 import type { Plugin } from "rollup";
-import { $fetch } from 'ofetch'
 import { loadIcon } from '@iconify/vue'
+import collections from '@iconify/json/collections.json'
 import fs from 'fs'
 import path from 'path'
 
 export async function iconifyOfflineRollupPlugin(): Promise<Plugin | undefined> {
     if (process.env.NODE_ENV === 'development') return
 
-    const collectionsUrl = "https://icones.js.org/collections-meta.json"
-
-    const collections = await $fetch(collectionsUrl, { retry: 3 })
-        .catch(() => {
-            throw new Error('[rollup-plugin-iconify-offline] failed to fetch collections')
-        })
-
-    const prefixes = collections.map((el: any) => el.id)
+    const prefixes = Object.keys(collections)
 
     // A regex to extract icon names from code. The match should:
     // Start and ends with " or ' or `

@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@iconify/json':
+    specifier: ^2.2.175
+    version: 2.2.175
   '@iconify/vue':
     specifier: ^4.1.1
     version: 4.1.1(vue@3.4.15)
@@ -580,6 +583,13 @@ packages:
     resolution: {integrity: sha512-+KpH+QxZU7O4675t3mnkQKcZZg56u+K/Ct2K+N2AZYNVK8kyeo/bI18tI8aPm3tvNNRyTWfj6s5tnGNlcbQRsA==}
     engines: {node: '>=14'}
     dev: true
+
+  /@iconify/json@2.2.175:
+    resolution: {integrity: sha512-/Ds/BSUv4++rTf0+KoGXHKSapCRXBqqSVG3h2Sci3jEgWxLpgfCZ4bOjOWGa5i+tURgde6VYOaTaX8u0xDnoAw==}
+    dependencies:
+      '@iconify/types': 2.0.0
+      pathe: 1.1.2
+    dev: false
 
   /@iconify/types@2.0.0:
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
@@ -4239,7 +4249,6 @@ packages:
 
   /pathe@1.1.2:
     resolution: {integrity: sha512-whLdWMYL2TwI08hn8/ZqAbrVemu0LNaNNJZX73O6qaIdCTfXutsLhMkjdENX0qhsQ9uIimo4/aQOmXkoon2nDQ==}
-    dev: true
 
   /perfect-debounce@1.0.0:
     resolution: {integrity: sha512-xCy9V055GLEqoFaHoC1SoLIaLmWctgCUaBaWxDZ7/Zx4CTyX7cJQLJOok/orfjZAh9kEYpjJa4d0KcJmCbctZA==}
