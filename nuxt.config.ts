@@ -12,4 +12,7 @@ export default defineNuxtConfig({
       },
     },
   },
+  routeRules: {
+    '/static': { prerender: true }
+  }
 });
