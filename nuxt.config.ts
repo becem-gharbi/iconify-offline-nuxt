@@ -1,4 +1,4 @@
-import { iconifyOfflineRollupPlugin } from './iconfiy-offline'
+import iconifyVitePlugin from './iconfiy-offline'
 
 export default defineNuxtConfig({
   devtools: { enabled: false },
@@ -6,11 +6,7 @@ export default defineNuxtConfig({
     transpile: ["@iconify/vue"], // DeprecationWarning: Use of deprecated double slash
   },
   vite: {
-    build: {
-      rollupOptions: {
-        plugins: [iconifyOfflineRollupPlugin()],
-      },
-    },
+    plugins: [iconifyVitePlugin()],
   },
   routeRules: {
     '/static': { prerender: true }

@@ -1,10 +1,10 @@
-import type { Plugin } from "rollup";
+import type { Plugin } from "vite";
 import { loadIcon } from '@iconify/vue'
 import collections from '@iconify/json/collections.json'
 import fs from 'fs'
 import path from 'path'
 
-export async function iconifyOfflineRollupPlugin(): Promise<Plugin | undefined> {
+export default async function (): Promise<Plugin | undefined> {
     if (process.env.NODE_ENV === 'development') return
 
     const prefixes = Object.keys(collections)
@@ -20,7 +20,7 @@ export async function iconifyOfflineRollupPlugin(): Promise<Plugin | undefined> 
     const icons = new Set<string>();
 
     return {
-        name: "rollup-plugin-iconify-offline",
+        name: "iconify-download-icons",
 
         transform(code) {
             const matches = code.match(regex)
