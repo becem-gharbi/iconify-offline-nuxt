@@ -4,7 +4,7 @@ import collections from '@iconify/json/collections.json'
 import fs from 'fs'
 import path from 'path'
 
-export default async function (): Promise<Plugin | undefined> {
+export default async function (rootDir = './'): Promise<Plugin | undefined> {
     if (process.env.NODE_ENV === 'development') return
 
     const prefixes = Object.keys(collections)
@@ -46,8 +46,8 @@ export default async function (): Promise<Plugin | undefined> {
                 })
 
                 const [prefix, name] = icon.split(':')
-                const dirPath = path.resolve(rootPath, prefix)
-                const filePath = path.resolve(dirPath, name + '.json')
+                const dirPath = path.resolve(iconsDir, prefix)
+                const filePath = path.resolve(dirPath, `${name}.json`)
                 makeDir(dirPath)
 
                 // https://iconify.design/docs/types/iconify-json.html#structure
@@ -60,11 +60,11 @@ export default async function (): Promise<Plugin | undefined> {
                 fs.writeFileSync(filePath, JSON.stringify(iconJSON))
             }
 
-            const rootPath = 'public/iconify'
-            makeDir(rootPath, true)
+            const iconsDir = path.resolve(rootDir, 'public', 'iconify')
+            makeDir(iconsDir, true)
             await Promise.all([...icons.values()].map(save))
 
-            console.log(`[rollup-plugin-iconify-offline] downloaded ${icons.size} icons to ${rootPath}`)
+            console.log(`[rollup-plugin-iconify-offline] downloaded ${icons.size} icons to ${iconsDir}`)
         },
     };
 }
