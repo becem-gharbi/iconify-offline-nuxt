@@ -11,7 +11,7 @@ export default defineNuxtPlugin(() => {
     const icons = getQuery<{ icons: string }>(url).icons.split(',')
 
     const iconsData = process.server
-      ? await Promise.all(icons.map(i => import(`~/public/iconify/${prefix}/${i}.json`)))
+      ? await Promise.all(icons.map(i => import(`~/public/iconify/${prefix}/${i}.json`).then(m => m.default)))
       : await Promise.all(icons.map(i => $fetch(`/iconify/${prefix}/${i}.json`)))
 
     const iconsDataMerged = defu({}, ...iconsData)
