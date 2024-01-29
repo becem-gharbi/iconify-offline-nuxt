@@ -10,7 +10,7 @@
 </template>
 
 <script setup>
-const icon1 = "majesticons:bookmark-plus-line"
+const icon1 = 'majesticons:bookmark-plus-line'
 const icon2 = 'majesticons:airplane-line'
-const icon3 = `flowbite:adjustments-vertical-outline`
+const icon3 = 'flowbite:adjustments-vertical-outline'
 </script>

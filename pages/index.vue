@@ -10,7 +10,7 @@
 </template>
 
 <script setup>
-const icon1 = "ph:airplane-tilt"
+const icon1 = 'ph:airplane-tilt'
 const icon2 = 'material-symbols:360-rounded'
-const icon3 = `solar:4k-outline`
+const icon3 = 'solar:4k-outline'
 </script>
