@@ -1,6 +1,35 @@
 # Changelog
 
 
+## v0.1.2
+
+[compare changes](https://github.com/becem-gharbi/iconify-offline-nuxt/compare/v0.1.1...v0.1.2)
+
+### 🔥 Performance
+
+- Download icons with a single network request ([62d1365](https://github.com/becem-gharbi/iconify-offline-nuxt/commit/62d1365))
+- Avoid writing an existant file ([859702d](https://github.com/becem-gharbi/iconify-offline-nuxt/commit/859702d))
+- Clear icons set after client build end ([06d5bea](https://github.com/becem-gharbi/iconify-offline-nuxt/commit/06d5bea))
+
+### 🩹 Fixes
+
+- Return default property on import ([cc1ec10](https://github.com/becem-gharbi/iconify-offline-nuxt/commit/cc1ec10))
+- Create icons directory once ([e38c183](https://github.com/becem-gharbi/iconify-offline-nuxt/commit/e38c183))
+
+### 💅 Refactors
+
+- Extract utilties from vite plugin ([3f52929](https://github.com/becem-gharbi/iconify-offline-nuxt/commit/3f52929))
+- Avoid dynamic import with variables ([35f95a7](https://github.com/becem-gharbi/iconify-offline-nuxt/commit/35f95a7))
+
+### 🏡 Chore
+
+- Add client-only icons ([217e817](https://github.com/becem-gharbi/iconify-offline-nuxt/commit/217e817))
+- Add server-only icons ([a2c2530](https://github.com/becem-gharbi/iconify-offline-nuxt/commit/a2c2530))
+
+### ❤️ Contributors
+
+- Becem-gharbi <becem.gharbi@live.com>
+
 ## v0.1.1
 
 
