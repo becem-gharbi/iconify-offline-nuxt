@@ -6,6 +6,9 @@
     <Iconify :name="icon1" />
     <Iconify :name="icon2" />
     <Iconify :name="icon3" />
+
+    <h3>Icons Client</h3>
+    <ClientComp />
   </div>
 </template>
 
