@@ -1,11 +1,17 @@
 <template>
   <div>
-    <h3>Icons</h3>
+    <h3>Icons Universal</h3>
     <Iconify name="logos:vue" />
     <Iconify name="logos:nuxt" />
     <Iconify :name="icon1" />
     <Iconify :name="icon2" />
     <Iconify :name="icon3" />
+
+    <h3>Icons Client</h3>
+    <ClientComp />
+
+    <h3>Icons Server</h3>
+    <ServerComp />
   </div>
 </template>
 

@@ -1,7 +1,7 @@
 <template>
-  <client-only>
+  <div>
     <Iconify name="carbon:3d-mpr-toggle" />
     <Iconify name="basil:dribbble-outline" />
     <Iconify name="logos:vue" />
-  </client-only>
+  </div>
 </template>

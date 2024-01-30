@@ -10,5 +10,8 @@ export default defineNuxtConfig({
   },
   routeRules: {
     '/static': { prerender: true }
+  },
+  experimental: {
+    componentIslands: true
   }
 })
