@@ -1,8 +1,9 @@
 import fs from 'fs'
 import path from 'path'
-import type { Plugin } from 'vite'
-import { loadIcon } from '@iconify/vue'
 import collections from '@iconify/json/collections.json'
+import { loadIcons, getIcon } from '@iconify/vue'
+import type { IconifyJSON, IconifyIcon, IconifyIconName } from '@iconify/vue'
+import type { Plugin } from 'vite'
 
 export default function (rootDir = './'): Plugin | undefined {
   if (process.env.NODE_ENV === 'development') { return }
@@ -29,6 +30,8 @@ export default function (rootDir = './'): Plugin | undefined {
     },
 
     async buildEnd () {
+      const iconsDir = path.resolve(rootDir, 'public', 'iconify')
+
       const makeDir = (path: string, replace = false) => {
         const exists = fs.existsSync(path)
         if (exists && replace) {
@@ -39,32 +42,44 @@ export default function (rootDir = './'): Plugin | undefined {
         }
       }
 
-      const save = async (icon: string) => {
-        const data = await loadIcon(icon).catch(() => {
-          throw new Error(`[rollup-plugin-iconify-offline] failed to load icon ${icon}`)
+      const save = (iconsJSON: IconifyJSON[]) => {
+        iconsJSON.forEach((i) => {
+          const prefix = i.prefix
+          const name = Object.keys(i.icons)[0]
+          const dirPath = path.resolve(iconsDir, prefix)
+          const filePath = path.resolve(dirPath, `${name}.json`)
+          makeDir(dirPath)
+          fs.writeFileSync(filePath, JSON.stringify(i))
         })
-
-        const [prefix, name] = icon.split(':')
-        const dirPath = path.resolve(iconsDir, prefix)
-        const filePath = path.resolve(dirPath, `${name}.json`)
-        makeDir(dirPath)
-
-        // https://iconify.design/docs/types/iconify-json.html#structure
-        const iconJSON = {
-          prefix,
-          icons: {
-            [name]: data
-          }
-        }
-        fs.writeFileSync(filePath, JSON.stringify(iconJSON))
       }
 
-      const iconsDir = path.resolve(rootDir, 'public', 'iconify')
+      const download = (icons: string[]) => new Promise<IconifyJSON[]>((resolve, reject) => {
+        loadIcons(icons, (loaded, missing, pending) => {
+          if (pending.length) { return }
+
+          const fullname = (e: IconifyIconName) => `${e.prefix}:${e.name}`
+
+          if (missing.length) {
+            const error = new Error(`❌ 󠀠 [iconify-download-icons] download failed of ${missing.map(fullname).join(' ')}`)
+            reject(error)
+          }
+
+          const output = loaded.map(i => ({
+            prefix: i.prefix,
+            icons: {
+              [i.name]: getIcon(fullname(i)) as IconifyIcon
+            }
+          }))
+
+          resolve(output)
+        })
+      })
+
       makeDir(iconsDir, true)
-      await Promise.all([...icons.values()].map(save))
+      await download([...icons.values()]).then(save)
 
       /* eslint-disable no-console */
-      console.log(`[rollup-plugin-iconify-offline] downloaded ${icons.size} icons to ${iconsDir}`)
+      console.log(`✔️ 󠀠 [iconify-download-icons] saved ${icons.size} icons to ${iconsDir}`)
     }
   }
 }
