@@ -37,6 +37,13 @@ const makeDir = (path: string, replace = false) => {
   }
 }
 
+const makeFile = (path: string, content:string) => {
+  const exists = fs.existsSync(path)
+  if (!exists) {
+    fs.writeFileSync(path, content)
+  }
+}
+
 const save = (iconsJSON: IconifyJSON[], iconsDir: string) => {
   iconsJSON.forEach((i) => {
     const prefix = i.prefix
@@ -44,7 +51,7 @@ const save = (iconsJSON: IconifyJSON[], iconsDir: string) => {
     const dirPath = path.resolve(iconsDir, prefix)
     const filePath = path.resolve(dirPath, `${name}.json`)
     makeDir(dirPath)
-    fs.writeFileSync(filePath, JSON.stringify(i))
+    makeFile(filePath, JSON.stringify(i))
   })
 }
 
