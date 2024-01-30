@@ -65,6 +65,8 @@ export default function (rootDir = './'): Plugin | undefined {
 
   const iconsDir = path.resolve(rootDir, 'public', 'iconify')
 
+  makeDir(iconsDir, true)
+
   return {
     name: 'iconify-download-icons',
 
@@ -74,8 +76,6 @@ export default function (rootDir = './'): Plugin | undefined {
     },
 
     async buildEnd () {
-      makeDir(iconsDir, true)
-
       await download([...icons.values()]).then(d => save(d, iconsDir))
 
       /* eslint-disable no-console */
