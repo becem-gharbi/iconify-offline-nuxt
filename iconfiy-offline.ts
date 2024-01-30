@@ -83,10 +83,13 @@ export default function (rootDir = './'): Plugin | undefined {
     },
 
     async buildEnd () {
-      await download([...icons.values()]).then(d => save(d, iconsDir))
+      if (icons.size === 0) { return }
 
+      await download([...icons.values()]).then(d => save(d, iconsDir))
       /* eslint-disable no-console */
       console.log(`✔️ 󠀠 [iconify-download-icons] saved ${icons.size} icons to ${iconsDir}`)
+
+      icons.clear()
     }
   }
 }
