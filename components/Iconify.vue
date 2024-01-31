@@ -13,7 +13,8 @@ const props = defineProps<{ name: string }>()
 const sName = computed(() => props.name)
 const icon = ref()
 
-await callOnce(() => {
+// Call once on client and once on server
+await callOnce(`iconify:icon-key-${process.server ? 0 : 1}`, () => {
   if (process.dev) { return }
 
   const imports = process.server
