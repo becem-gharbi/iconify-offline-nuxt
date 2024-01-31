@@ -1,6 +1,35 @@
 # Changelog
 
 
+## v0.1.3
+
+[compare changes](https://github.com/becem-gharbi/iconify-offline-nuxt/compare/v0.1.2...v0.1.3)
+
+### 🔥 Performance
+
+- Move fetch setting from nuxt plugin ([89198c1](https://github.com/becem-gharbi/iconify-offline-nuxt/commit/89198c1))
+- Avoid @iconify/json installation (large size) ([d50f321](https://github.com/becem-gharbi/iconify-offline-nuxt/commit/d50f321))
+- Avoid download of already saved icons ([0597d53](https://github.com/becem-gharbi/iconify-offline-nuxt/commit/0597d53))
+
+### 🩹 Fixes
+
+- Set custom fetch method once on server and once on client ([1534cfe](https://github.com/becem-gharbi/iconify-offline-nuxt/commit/1534cfe))
+
+### 💅 Refactors
+
+- Better readability of vite icon ([7d988d1](https://github.com/becem-gharbi/iconify-offline-nuxt/commit/7d988d1))
+
+### 🏡 Chore
+
+- Avoid cls ([fe3a09a](https://github.com/becem-gharbi/iconify-offline-nuxt/commit/fe3a09a))
+- Add dynamic Icons ([4377a0e](https://github.com/becem-gharbi/iconify-offline-nuxt/commit/4377a0e))
+- Commit icons ([de39d70](https://github.com/becem-gharbi/iconify-offline-nuxt/commit/de39d70))
+- No significant change ([99187da](https://github.com/becem-gharbi/iconify-offline-nuxt/commit/99187da))
+
+### ❤️ Contributors
+
+- Becem-gharbi <becem.gharbi@live.com>
+
 ## v0.1.2
 
 [compare changes](https://github.com/becem-gharbi/iconify-offline-nuxt/compare/v0.1.1...v0.1.2)
