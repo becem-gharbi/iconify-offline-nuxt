@@ -1,4 +1,4 @@
-import iconifyVitePlugin from './iconfiy-offline'
+import iconifyVitePlugin from './iconify-vite'
 
 export default defineNuxtConfig({
   devtools: { enabled: false },
