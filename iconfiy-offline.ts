@@ -28,12 +28,9 @@ const download = (icons: string[]) => new Promise<IconifyJSON[]>((resolve, rejec
   })
 })
 
-const makeDir = (path: string, replace = false) => {
+const makeDir = (path: string) => {
   const exists = fs.existsSync(path)
-  if (exists && replace) {
-    fs.rmSync(path, { recursive: true, force: true })
-  }
-  if (!exists || replace) {
+  if (!exists) {
     fs.mkdirSync(path)
   }
 }
@@ -56,6 +53,25 @@ const save = (iconsJSON: IconifyJSON[], iconsDir: string) => {
   })
 }
 
+const removeSavedIcons = (icons: string[], iconsDir: string) => {
+  icons.forEach((icon) => {
+    const [prefix, name] = icon.split(':')
+    const dirPath = path.resolve(iconsDir, prefix)
+    const filePath = path.resolve(dirPath, `${name}.json`)
+    fs.rmSync(filePath)
+    if (fs.readdirSync(dirPath).length === 0) {
+      fs.rmdirSync(dirPath)
+    }
+  })
+}
+
+const getSavedIcons = (iconsDir: string) => {
+  return fs.readdirSync(iconsDir, { recursive: true })
+    .map(p => path.parse(p.toString()))
+    .filter(p => p.dir)
+    .map(p => `${p.dir}:${p.name}`)
+}
+
 export default function (rootDir = './'): Plugin | undefined {
   if (import.meta.env.DEV) { return }
 
@@ -71,15 +87,10 @@ export default function (rootDir = './'): Plugin | undefined {
 
   const iconsDir = path.resolve(rootDir, 'public', 'iconify')
 
-  makeDir(iconsDir, true)
+  makeDir(iconsDir)
 
   return {
     name: 'iconify-download-icons',
-
-    transform (code) {
-      code.match(regex)?.forEach(m => icons.add(m.replace(/'|"|`/g, '')))
-      return { code, map: null }
-    },
 
     async buildStart () {
       if (regex) { return }
@@ -89,15 +100,27 @@ export default function (rootDir = './'): Plugin | undefined {
       regex = new RegExp(`("|'|\`)(${prefixes.join('|')}):[a-z0-9]+(?:-[a-z0-9]+)*("|'|\`)`, 'g')
     },
 
-    async buildEnd () {
-      if (icons.size === 0) { return }
+    transform (code) {
+      code.match(regex)?.forEach(m => icons.add(m.replace(/'|"|`/g, '')))
+      return { code, map: null }
+    },
 
-      await download([...icons.values()]).then(d => save(d, iconsDir))
+    async buildEnd () {
+      const savedIcons = getSavedIcons(iconsDir)
+
+      const unusedIcons = savedIcons.filter(i => icons.has(i) === false)
+      removeSavedIcons(unusedIcons, iconsDir)
+
+      const missingIcons = new Set<string>()
+
+      icons.forEach(i => savedIcons.includes(i) || missingIcons.add(i))
+
+      if (missingIcons.size === 0) { return }
+
+      await download([...missingIcons.values()]).then(d => save(d, iconsDir))
 
       /* eslint-disable no-console */
-      console.log(`✔️ 󠀠 [iconify-download-icons] saved ${icons.size} icons to ${iconsDir}`)
-
-      icons.clear()
+      console.log(`✔️ 󠀠 [iconify-download-icons] saved ${missingIcons.size} icons to ${iconsDir}`)
     }
   }
 }
