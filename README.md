@@ -8,9 +8,9 @@ The advantages are:
 - ✔️  Takes benefit from Iconify client & server side caching (localStorage & memory).
 - ✔️  Build offline applications.
 
-At build a Vite [plugin](https://github.com/becem-gharbi/iconify-offline-nuxt/blob/main/iconfiy-offline.ts) scans the code and extracts all valid icon names. Then these icons are downloaded and saved locally on `/public/iconify` folder. 
+At build a Vite [plugin](https://github.com/becem-gharbi/iconify-offline-nuxt/blob/47231931bfd7b6dae05c37bf3d8e3fdd0da8c399/iconify-vite/index.ts#L7) scans the code and extracts all valid icon names. Then these icons are downloaded and saved locally on `/public/iconify` folder. 
 
-At runtime (production) the icons are fetched via a custom [fetch](https://github.com/becem-gharbi/iconify-offline-nuxt/blob/main/plugins/iconify.ts) handler.
+At runtime (production) the icons are fetched via a custom [fetch](https://github.com/becem-gharbi/iconify-offline-nuxt/blob/47231931bfd7b6dae05c37bf3d8e3fdd0da8c399/components/Iconify.vue#L24) handler.
 - On server side icons are directly imported. 
 - On client side icons are served as static assets.
 
