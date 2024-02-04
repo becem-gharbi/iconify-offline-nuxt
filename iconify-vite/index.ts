@@ -4,7 +4,7 @@ import { download, getSavedIcons, makeDir, removeSavedIcons, save } from './util
 
 const COLLECTIONS_URL = 'https://raw.githubusercontent.com/iconify/icon-sets/master/collections.json'
 
-export default function (rootDir = './'): Plugin | undefined {
+export default function (rootDir = './', collectionsUrl = COLLECTIONS_URL): Plugin | undefined {
   if (process.env.NODE_ENV === 'development') { return }
 
   // A regex to extract icon names from code. The match should:
@@ -27,7 +27,17 @@ export default function (rootDir = './'): Plugin | undefined {
     async buildStart () {
       if (regex) { return }
 
-      const collections = await fetch(COLLECTIONS_URL).then(r => r.json())
+      const fetchError = new Error(`❌ 󠀠 [iconify-download-icons] failed to fetch collections from ${collectionsUrl}`)
+
+      const collections = await fetch(collectionsUrl)
+        .then((r) => {
+          if (r.ok) { return r.json() }
+          throw fetchError
+        })
+        .catch(() => {
+          throw fetchError
+        })
+
       const prefixes = Object.keys(collections)
       regex = new RegExp(`("|'|\`)(${prefixes.join('|')}):[a-z0-9]+(?:-[a-z0-9]+)*("|'|\`)`, 'g')
     },
