@@ -4,7 +4,6 @@ This repo proposes a solution to load Iconify icons offline on Nuxt3.
 
 The advantages are:
 - ✔️  On server side no need for network calls thus better loading time.
-- ✔️  On client side no need to rely on Iconify API thus better security.
 - ✔️  Takes benefit from Iconify client & server side caching (localStorage & memory).
 - ✔️  Build offline applications.
 
